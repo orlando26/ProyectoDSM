@@ -10,14 +10,26 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   if(Serial.available() > 0){
-    valX = Serial.read();
-    valY = Serial.read();
-    valZ = Serial.read();
-    Serial.print("Acelerometro X: ");
+    valX = Serial.read() - 65;
+    valY = Serial.read() - 65;
+    valZ = Serial.read() - 65;
+    Serial.print("Accel X: ");
     Serial.print(valX);
-    Serial.print("\tAcelerometro Y: ");
+    Serial.print("\tAccel Y: ");
     Serial.print(valY);
-    Serial.print("\tAcelerometro Z: ");
-    Serial.println(valZ);
+    Serial.print("\tAccel Z: ");
+    Serial.print(valZ);
+
+    valX = constrain(valX, 0, 20);
+    valX = map(valX, 0, 20, 0, 180);
+    valY = constrain(valY, 0, 20);
+    valY = map(valY, 0, 20, 0, 180);
+    valZ = constrain(valY, 0, 20);
+    valZ = map(valY, 0, 20, 0, 180);
+
+    Serial.print("\tServoX :");
+    Serial.print(valX);
+    Serial.print("\tServoY :");
+    Serial.println(valY);
   }
 }

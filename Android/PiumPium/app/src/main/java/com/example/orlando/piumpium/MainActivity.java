@@ -1,6 +1,7 @@
 package com.example.orlando.piumpium;
 
 import android.content.Context;
+import android.gesture.GestureOverlayView;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,11 +12,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.orlando.arduino.Arduino;
 import com.google.android.gms.appindexing.Action;
@@ -30,7 +33,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView xASCIIVal;
     TextView yASCIIVal;
     TextView zASCIIVal;
+    TextView panelX;
+    TextView panelY;
     Button btnConectar;
+    GestureOverlayView panel;
     char xASCII;
     char yASCII;
     char zASCII;
@@ -53,6 +59,40 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         xVal = (TextView) findViewById(R.id.xLabel);
         yVal = (TextView) findViewById(R.id.yLabel);
         zVal = (TextView) findViewById(R.id.zLabel);
+        panelX = (TextView) findViewById(R.id.panelX);
+        panelY = (TextView) findViewById(R.id.panelY);
+        panel = (GestureOverlayView) findViewById(R.id.panel);
+        panel.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
+            @Override
+            public void onGestureStarted(GestureOverlayView overlay, MotionEvent event) {
+                Toast.makeText(MainActivity.this, "started", Toast.LENGTH_SHORT).show();
+            }
+            //x1=38,y1=548
+            @Override
+            public void onGesture(GestureOverlayView overlay, MotionEvent event) {
+                int x;
+                int y;
+                x = (int)event.getRawX();
+                x = constrain(x, (int)overlay.getX(), (int)overlay.getX() + overlay.getWidth());
+                x = map(x, (int)overlay.getX(), (int)overlay.getX() + overlay.getWidth(), 0, (int)overlay.getX() + overlay.getWidth());
+                y = (int)event.getRawY();
+                y = constrain(y, (int)overlay.getY(), (int)overlay.getY() + overlay.getHeight());
+                y = map(y, (int)overlay.getY(), (int)overlay.getY() + overlay.getHeight(), 0, (int)overlay.getY() + overlay.getHeight());
+                panelX.setText(String.valueOf(x));
+                panelY.setText(String.valueOf(y));
+
+            }
+
+            @Override
+            public void onGestureEnded(GestureOverlayView overlay, MotionEvent event) {
+                Toast.makeText(MainActivity.this, "ended", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onGestureCancelled(GestureOverlayView overlay, MotionEvent event) {
+
+            }
+        });
         xASCIIVal = (TextView) findViewById(R.id.xASCIILabel);
         yASCIIVal = (TextView) findViewById(R.id.yASCIILabel);
         zASCIIVal = (TextView) findViewById(R.id.zASCIILabel);
@@ -72,6 +112,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
+    }
+
+    int map(int x, int in_min, int in_max, int out_min, int out_max)
+    {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+    int constrain(int x, int min, int max){
+        if(x < min){
+            x = min;
+        }else if(x > max){
+            x = max;
+        }
+        return x;
     }
 
     @Override
@@ -110,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 xASCIIVal.setText(Character.toString(xASCII));
                 yASCIIVal.setText(Character.toString(yASCII));
                 zASCIIVal.setText(Character.toString(zASCII));
-                
+
                 arduino.write(Character.toString(xASCII));
                 arduino.write(Character.toString(yASCII));
                 arduino.write(Character.toString(zASCII));

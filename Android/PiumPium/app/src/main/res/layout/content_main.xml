@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:background="@color/colorBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.orlando.piumpium.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -111,9 +112,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:text="Disparar"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X: "/>
+        <TextView
+            android:id="@+id/panelX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Y: "/>
+        <TextView
+            android:id="@+id/panelY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <android.gesture.GestureOverlayView
+        android:layout_width="330dp"
+        android:layout_height="250dp"
+        android:id="@+id/panel"
+        android:layout_gravity="center_horizontal"></android.gesture.GestureOverlayView>
 
 
 </LinearLayout>
