@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     char yASCII;
     char zASCII;
     Arduino arduino;
+    View layout;
     private long lastUpdate = 0;
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setSupportActionBar(toolbar);
 
         arduino = new Arduino(this);
-
+        layout = this.getWindow().findViewById(Window.ID_ANDROID_CONTENT);
         xVal = (TextView) findViewById(R.id.xLabel);
         yVal = (TextView) findViewById(R.id.yLabel);
         zVal = (TextView) findViewById(R.id.zLabel);
@@ -72,14 +74,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onGesture(GestureOverlayView overlay, MotionEvent event) {
                 int x;
                 int y;
-                x = (int)event.getRawX();
-                x = constrain(x, (int)overlay.getX(), (int)overlay.getX() + overlay.getWidth());
-                x = map(x, (int)overlay.getX(), (int)overlay.getX() + overlay.getWidth(), 0, (int)overlay.getX() + overlay.getWidth());
-                y = (int)event.getRawY();
-                y = constrain(y, (int)overlay.getY(), (int)overlay.getY() + overlay.getHeight());
-                y = map(y, (int)overlay.getY(), (int)overlay.getY() + overlay.getHeight(), 0, (int)overlay.getY() + overlay.getHeight());
-                panelX.setText(String.valueOf(x));
-                panelY.setText(String.valueOf(y));
+                x = (int)event.getX();
+                x = constrain(x, 0, overlay.getWidth());
+                x = map(x, 0, overlay.getWidth(), -1, 101);
+                y = (int) event.getY();
+                y = constrain(y, 0, overlay.getHeight());
+                y = map(y, 0, overlay.getHeight(), -1, 101);
+
+                if (x != -1 && y != -1 && x != 101 && y != 101){
+                    panelX.setText(String.valueOf(x));
+                    panelY.setText(String.valueOf(y));
+                }
+
 
             }
 
@@ -90,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             @Override
             public void onGestureCancelled(GestureOverlayView overlay, MotionEvent event) {
-
+                Toast.makeText(MainActivity.this, "cancelled", Toast.LENGTH_SHORT).show();
             }
         });
         xASCIIVal = (TextView) findViewById(R.id.xASCIILabel);
@@ -116,7 +122,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     int map(int x, int in_min, int in_max, int out_min, int out_max)
     {
-        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        try{
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }catch(ArithmeticException e){
+            return 0;
+        }
     }
     int constrain(int x, int min, int max){
         if(x < min){
@@ -151,6 +161,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 last_x = (int)x + 10;
                 last_y = (int)y + 10;
                 last_z = (int)z + 10;
+
+                last_x = map(last_x, 0, 20, 0, 100);
+                last_x = map(last_y, 0, 20, 0, 100);
+                last_x = map(last_z, 0, 20, 0, 100);
 
                 xVal.setText(String.valueOf(last_x));
                 yVal.setText(String.valueOf(last_y));
