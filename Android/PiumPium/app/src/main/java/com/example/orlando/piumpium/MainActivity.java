@@ -25,10 +25,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView xVal;
     TextView yVal;
     TextView zVal;
+    TextView xASCIIVal;
+    TextView yASCIIVal;
+    TextView zASCIIVal;
+    char xASCII;
+    char yASCII;
+    char zASCII;
     private long lastUpdate = 0;
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
-    private float last_x, last_y, last_z;
+    private int last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 600;
 
     @Override
@@ -41,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         xVal = (TextView) findViewById(R.id.xLabel);
         yVal = (TextView) findViewById(R.id.yLabel);
         zVal = (TextView) findViewById(R.id.zLabel);
+        xASCIIVal = (TextView) findViewById(R.id.xASCIILabel);
+        yASCIIVal = (TextView) findViewById(R.id.yASCIILabel);
+        zASCIIVal = (TextView) findViewById(R.id.zASCIILabel);
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -78,17 +87,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 }
 
-                last_x = x;
-                last_y = y;
-                last_z = z;
+                last_x = (int)x + 10;
+                last_y = (int)y + 10;
+                last_z = (int)z + 10;
 
                 xVal.setText(String.valueOf(last_x));
                 yVal.setText(String.valueOf(last_y));
                 zVal.setText(String.valueOf(last_z));
 
+                xASCII = (char)(last_x + 65);
+                yASCII = (char)(last_y + 65);
+                zASCII = (char)(last_z + 65);
 
-
-
+                xASCIIVal.setText(Character.toString(xASCII));
+                yASCIIVal.setText(Character.toString(yASCII));
+                zASCIIVal.setText(Character.toString(zASCII));
             }
         }
     }

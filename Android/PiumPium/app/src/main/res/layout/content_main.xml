@@ -13,6 +13,7 @@
     tools:context="com.example.orlando.piumpium.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <!--Labels X       -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,11 +37,12 @@
             android:layout_marginLeft="30dp"
             android:text="ASCII: "/>
         <TextView
-            android:id="@+id/yASCIILabel"
+            android:id="@+id/xASCIILabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <!--Labels Y       -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,11 +66,12 @@
             android:layout_marginLeft="30dp"
             android:text="ASCII: "/>
         <TextView
-            android:id="@+id/zASCIILabel"
+            android:id="@+id/yASCIILabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <!--Labels Z       -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,10 +95,17 @@
             android:layout_marginLeft="30dp"
             android:text="ASCII: "/>
         <TextView
-            android:id="@+id/xASCIILabel"
+            android:id="@+id/zASCIILabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="Disparar"/>
 
 
 
