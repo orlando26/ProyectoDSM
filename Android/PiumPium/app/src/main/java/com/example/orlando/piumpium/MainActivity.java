@@ -14,13 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.orlando.arduino.Arduino;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
 
     TextView xVal;
     TextView yVal;
@@ -28,9 +30,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView xASCIIVal;
     TextView yASCIIVal;
     TextView zASCIIVal;
+    Button btnConectar;
     char xASCII;
     char yASCII;
     char zASCII;
+    Arduino arduino;
     private long lastUpdate = 0;
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
@@ -44,12 +48,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        arduino = new Arduino(this);
+
         xVal = (TextView) findViewById(R.id.xLabel);
         yVal = (TextView) findViewById(R.id.yLabel);
         zVal = (TextView) findViewById(R.id.zLabel);
         xASCIIVal = (TextView) findViewById(R.id.xASCIILabel);
         yASCIIVal = (TextView) findViewById(R.id.yASCIILabel);
         zASCIIVal = (TextView) findViewById(R.id.zASCIILabel);
+        btnConectar = (Button) findViewById(R.id.btnConnect);
+        btnConectar.setOnClickListener(this);
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -102,9 +110,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 xASCIIVal.setText(Character.toString(xASCII));
                 yASCIIVal.setText(Character.toString(yASCII));
                 zASCIIVal.setText(Character.toString(zASCII));
+                
+                arduino.write(Character.toString(xASCII));
+                arduino.write(Character.toString(yASCII));
+                arduino.write(Character.toString(zASCII));
             }
         }
     }
+
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -143,5 +157,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Button btn = (Button)v;
+        switch(btn.getId()){
+            case R.id.btnConnect:
+                arduino.connect();
+                break;
+        }
     }
 }
