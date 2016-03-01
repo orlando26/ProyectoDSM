@@ -15,9 +15,9 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   if(Serial.available() > 0){
-    valX = Serial.read() - 65;
-    valY = Serial.read() - 65;
-    valZ = Serial.read() - 65;
+    valX = Serial.read();
+    valY = Serial.read();
+    valZ = Serial.read();
     Serial.print("Accel X: ");
     Serial.print(valX);
     Serial.print("\tAccel Y: ");
@@ -40,4 +40,5 @@ void loop() {
   
   servo1.write(valX);
   servo2.write(valY);
+  delay(50);
 }
