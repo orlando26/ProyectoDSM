@@ -1,10 +1,15 @@
+#include<Servo.h>
 char data;
 int valX = 0;
 int valY = 0;
 int valZ = 0;
+Servo servo1; //Servo que mueve el eje x
+Servo servo2;  //Servo que mueve el eje y
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  servo1.attach(3);
+  servo2.attach(9);
 }
 
 void loop() {
@@ -32,4 +37,7 @@ void loop() {
     Serial.print("\tServoY :");
     Serial.println(valY);
   }
+  
+  servo1.write(valX);
+  servo2.write(valY);
 }
