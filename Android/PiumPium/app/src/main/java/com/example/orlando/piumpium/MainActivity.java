@@ -1,6 +1,7 @@
 package com.example.orlando.piumpium;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.gesture.GestureOverlayView;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -54,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         arduino = new Arduino(this);
         layout = this.getWindow().findViewById(Window.ID_ANDROID_CONTENT);
@@ -76,14 +79,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 int y;
                 x = (int)event.getX();
                 x = constrain(x, 0, overlay.getWidth());
-                x = map(x, 0, overlay.getWidth(), -1, 101);
+                x = map(x, 0, overlay.getWidth(), -1, 21);
                 y = (int) event.getY();
                 y = constrain(y, 0, overlay.getHeight());
-                y = map(y, 0, overlay.getHeight(), -1, 101);
+                y = map(y, 0, overlay.getHeight(), -1, 21);
 
                 if (x != -1 && y != -1 && x != 101 && y != 101){
                     panelX.setText(String.valueOf(x));
                     panelY.setText(String.valueOf(y));
+                    arduino.write(Character.toString((char) (x + 65)));
+                    arduino.write(Character.toString((char)(y + 65)));
+                    arduino.write(Character.toString((char)(65)));
                 }
 
 
@@ -153,9 +159,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 last_y = (int)y + 10;
                 last_z = (int)z + 10;
 
-                last_x = map(last_x, 0, 20, 0, 100);
+               /* last_x = map(last_x, 0, 20, 0, 100);
                 last_x = map(last_y, 0, 20, 0, 100);
-                last_x = map(last_z, 0, 20, 0, 100);
+                last_x = map(last_z, 0, 20, 0, 100);*/
 
                 xVal.setText(String.valueOf(last_x));
                 yVal.setText(String.valueOf(last_y));
