@@ -29,8 +29,8 @@ void loop() {
     valX = map(valX, 0, 20, 0, 180);
     valY = constrain(valY, 0, 20);
     valY = map(valY, 0, 20, 0, 180);
-    valZ = constrain(valY, 0, 20);
-    valZ = map(valY, 0, 20, 0, 180);
+    valZ = constrain(valZ, 0, 20);
+    valZ = map(valZ, 0, 20, 0, 180);
 
     Serial.print("\tServoX :");
     Serial.print(valX);
