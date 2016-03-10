@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_marginRight="19dp"
     android:orientation="horizontal"
     android:background="@color/colorBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -18,12 +15,23 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <Button
-            android:id="@+id/btnConnect"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Conectar"/>
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnConnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginRight="55dp"
+                android:text="Conectar"/>
+            <Button
+                android:id="@+id/btnDesconectar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Desconectar"/>
+        </LinearLayout>
+
         <!--Labels X       -->
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="ASCII: "/>
+                android:text="Roll: "/>
             <TextView
                 android:id="@+id/xASCIILabel"
                 android:layout_width="wrap_content"
@@ -75,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="ASCII: "/>
+                android:text="pitch: "/>
             <TextView
                 android:id="@+id/yASCIILabel"
                 android:layout_width="wrap_content"
@@ -100,22 +108,13 @@
                 android:id="@+id/zLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="ASCII: "/>
-            <TextView
-                android:id="@+id/zASCIILabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+
         </LinearLayout>
 
         <Button
             android:layout_width="250dp"
-            android:layout_height="130dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:text="Disparar"/>
 
 
@@ -153,8 +152,9 @@
         </LinearLayout>
 
         <android.gesture.GestureOverlayView
-            android:layout_width="330dp"
-            android:layout_height="250dp"
+            android:layout_width="300dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/panel"
             android:background="#000000"></android.gesture.GestureOverlayView>
 

@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView panelX;
     TextView panelY;
     Button btnConectar;
+    Button btnDesonectar;
     GestureOverlayView panel;
     char xASCII;
     char yASCII;
@@ -47,8 +48,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long lastUpdate = 0;
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
-    private int last_x, last_y, last_z;
+    private float last_x, last_y, last_z;
+    double fx = 0;
+    double fy = 0;
+    double fz = 0;
+    double roll, pitch;
     private static final int SHAKE_THRESHOLD = 600;
+    private static final float ALPHA = 0.5f;
+    boolean writeAccel = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onGestureStarted(GestureOverlayView overlay, MotionEvent event) {
                 Toast.makeText(MainActivity.this, "started", Toast.LENGTH_SHORT).show();
+                writeAccel = false;
             }
             //x1=38,y1=548
             @Override
@@ -79,17 +87,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 int y;
                 x = (int)event.getX();
                 x = constrain(x, 0, overlay.getWidth());
-                x = map(x, 0, overlay.getWidth(), -1, 21);
+                x = map(x, 0, overlay.getWidth(), 0, 180);
                 y = (int) event.getY();
                 y = constrain(y, 0, overlay.getHeight());
-                y = map(y, 0, overlay.getHeight(), -1, 21);
+                y = map(y, 0, overlay.getHeight(), 0, 180);
 
-                if (x != -1 && y != -1 && x != 101 && y != 101){
+                if (x != -1 && y != -1 && x != 180 && y != 180){
                     panelX.setText(String.valueOf(x));
                     panelY.setText(String.valueOf(y));
-                    arduino.write(Character.toString((char) (x + 65)));
-                    arduino.write(Character.toString((char)(y + 65)));
-                    arduino.write(Character.toString((char)(65)));
+                    arduino.write(Character.toString((char) (x)));
+                    arduino.write(Character.toString((char)(y)));
                 }
 
 
@@ -98,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onGestureEnded(GestureOverlayView overlay, MotionEvent event) {
                 Toast.makeText(MainActivity.this, "ended", Toast.LENGTH_SHORT).show();
+                writeAccel = true;
             }
 
             @Override
@@ -107,9 +115,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
         xASCIIVal = (TextView) findViewById(R.id.xASCIILabel);
         yASCIIVal = (TextView) findViewById(R.id.yASCIILabel);
-        zASCIIVal = (TextView) findViewById(R.id.zASCIILabel);
+        //zASCIIVal = (TextView) findViewById(R.id.zASCIILabel);
         btnConectar = (Button) findViewById(R.id.btnConnect);
         btnConectar.setOnClickListener(this);
+        btnDesonectar = (Button) findViewById(R.id.btnDesconectar);
+        btnDesonectar.setOnClickListener(this);
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -155,29 +165,51 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 }
 
-                last_x = (int)x + 10;
-                last_y = (int)y + 10;
-                last_z = (int)z + 10;
+                last_x = x;
+                last_y = y;
+                last_z = z;
+
+                fx = last_x * ALPHA + (fx * (1.0 - ALPHA));
+                fy = last_y * ALPHA + (fy * (1.0 - ALPHA));
+                fz = last_z * ALPHA + (fz * (1.0 - ALPHA));
+
+                roll  = (Math.atan2(-fy, fz)*180.0)/Math.PI;
+                pitch = (Math.atan2(fx, Math.sqrt(fy * fy + fz * fz))*180.0)/Math.PI;
+
 
                /* last_x = map(last_x, 0, 20, 0, 100);
                 last_x = map(last_y, 0, 20, 0, 100);
                 last_x = map(last_z, 0, 20, 0, 100);*/
 
-                xVal.setText(String.valueOf(last_x));
-                yVal.setText(String.valueOf(last_y));
-                zVal.setText(String.valueOf(last_z));
+                xVal.setText(String.format("%.2f", fx));
+                yVal.setText(String.format("%.2f", fy));
+                zVal.setText(String.format("%.2f", fz));
 
-                xASCII = (char)(last_x + 65);
-                yASCII = (char)(last_y + 65);
-                zASCII = (char)(last_z + 65);
+                roll = map((int)roll, -180, 180, 0, 180);
+                pitch = map((int)pitch, -180, 180, 0, 180);
 
-                xASCIIVal.setText(Character.toString(xASCII));
-                yASCIIVal.setText(Character.toString(yASCII));
-                zASCIIVal.setText(Character.toString(zASCII));
+                arduino.write(Character.valueOf((char)roll).toString());
+                arduino.write(Character.valueOf((char)pitch).toString());
 
-                arduino.write(Character.toString(xASCII));
-                arduino.write(Character.toString(yASCII));
-                arduino.write(Character.toString(zASCII));
+                /*if(roll > 100){
+                    arduino.write("l");
+                }else if(roll < 80){
+                    arduino.write("r");
+                }
+                if(pitch > 115){
+                    arduino.write("u");
+                }else if(pitch < 90){
+                    arduino.write("d");
+                }*/
+
+                xASCII = (char)(int)(roll);
+                yASCII = (char)(int)(pitch);
+
+                xASCIIVal.setText(String.valueOf(roll));
+                yASCIIVal.setText(String.valueOf(pitch));
+                //zASCIIVal.setText(Character.toString(zASCII));
+
+                //arduino.write(Character.toString(zASCII));
             }
         }
     }
@@ -229,6 +261,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         switch(btn.getId()){
             case R.id.btnConnect:
                 arduino.connect();
+                break;
+            case R.id.btnDesconectar:
+                arduino.disconnect();
                 break;
         }
     }
