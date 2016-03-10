@@ -176,11 +176,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 roll  = (Math.atan2(-fy, fz)*180.0)/Math.PI;
                 pitch = (Math.atan2(fx, Math.sqrt(fy * fy + fz * fz))*180.0)/Math.PI;
 
-
-               /* last_x = map(last_x, 0, 20, 0, 100);
-                last_x = map(last_y, 0, 20, 0, 100);
-                last_x = map(last_z, 0, 20, 0, 100);*/
-
                 xVal.setText(String.format("%.2f", fx));
                 yVal.setText(String.format("%.2f", fy));
                 zVal.setText(String.format("%.2f", fz));
@@ -191,25 +186,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 arduino.write(Character.valueOf((char)roll).toString());
                 arduino.write(Character.valueOf((char)pitch).toString());
 
-                /*if(roll > 100){
-                    arduino.write("l");
-                }else if(roll < 80){
-                    arduino.write("r");
-                }
-                if(pitch > 115){
-                    arduino.write("u");
-                }else if(pitch < 90){
-                    arduino.write("d");
-                }*/
-
                 xASCII = (char)(int)(roll);
                 yASCII = (char)(int)(pitch);
 
                 xASCIIVal.setText(String.valueOf(roll));
                 yASCIIVal.setText(String.valueOf(pitch));
-                //zASCIIVal.setText(Character.toString(zASCII));
-
-                //arduino.write(Character.toString(zASCII));
             }
         }
     }
