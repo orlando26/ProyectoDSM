@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView zVal;
     TextView xASCIIVal;
     TextView yASCIIVal;
-    TextView zASCIIVal;
     TextView panelX;
     TextView panelY;
     Button btnConectar;
@@ -56,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private static final int SHAKE_THRESHOLD = 600;
     private static final float ALPHA = 0.5f;
     boolean writeAccel = true;
+    Button onBtn;
+    Button shootBtn;
+    boolean on = false;
+    boolean shoot = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         xVal = (TextView) findViewById(R.id.xLabel);
         yVal = (TextView) findViewById(R.id.yLabel);
         zVal = (TextView) findViewById(R.id.zLabel);
+        onBtn = (Button) findViewById(R.id.onBtn);
+        shootBtn = (Button) findViewById(R.id.shootBtn);
+        onBtn.setOnClickListener(this);
+        shootBtn.setOnClickListener(this);
+
         panelX = (TextView) findViewById(R.id.panelX);
         panelY = (TextView) findViewById(R.id.panelY);
         panel = (GestureOverlayView) findViewById(R.id.panel);
@@ -183,8 +191,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 roll = map((int)roll, -180, 180, 0, 180);
                 pitch = map((int)pitch, -180, 180, 0, 180);
 
-                arduino.write(Character.valueOf((char)roll).toString());
-                arduino.write(Character.valueOf((char)pitch).toString());
+                //arduino.write(Character.valueOf((char)roll).toString());
+                //arduino.write(Character.valueOf((char)pitch).toString());
 
                 xASCII = (char)(int)(roll);
                 yASCII = (char)(int)(pitch);
@@ -246,6 +254,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             case R.id.btnDesconectar:
                 arduino.disconnect();
                 break;
+            case R.id.onBtn:
+                if(!on){
+                    arduino.write("a");
+                    on = true;
+                }else{
+                    arduino.write("c");
+                    on = false;
+                }
+                break;
+            case R.id.shootBtn:
+                if(!shoot){
+                    arduino.write("b");
+                    shoot = true;
+                }else{
+                    arduino.write("d");
+                    shoot = false;
+                }
         }
     }
 }

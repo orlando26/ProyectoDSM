@@ -111,11 +111,27 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="250dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:text="Disparar"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/onBtn"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:text="Encender"/>
+            <Button
+                android:id="@+id/shootBtn"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:text="Disparar"/>
+
+        </LinearLayout>
+
+
 
 
     </LinearLayout>
