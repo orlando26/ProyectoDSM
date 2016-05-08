@@ -7,25 +7,16 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.orlando.arduino.Arduino;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
 
@@ -34,15 +25,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView zVal;
     TextView xASCIIVal;
     TextView yASCIIVal;
-    TextView zASCIIVal;
     TextView panelX;
     TextView panelY;
     Button btnConectar;
     Button btnDesonectar;
+    Button onBtn;
+    Button shootBtn;
     GestureOverlayView panel;
     char xASCII;
     char yASCII;
-    char zASCII;
     Arduino arduino;
     View layout;
     private long lastUpdate = 0;
@@ -56,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private static final int SHAKE_THRESHOLD = 600;
     private static final float ALPHA = 0.5f;
     boolean writeAccel = true;
+    boolean on = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Toast.makeText(MainActivity.this, "started", Toast.LENGTH_SHORT).show();
                 writeAccel = false;
             }
-            //x1=38,y1=548
             @Override
             public void onGesture(GestureOverlayView overlay, MotionEvent event) {
                 int x;
@@ -98,8 +89,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     arduino.write(Character.toString((char) (x)));
                     arduino.write(Character.toString((char)(y)));
                 }
-
-
             }
 
             @Override
@@ -115,11 +104,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
         xASCIIVal = (TextView) findViewById(R.id.xASCIILabel);
         yASCIIVal = (TextView) findViewById(R.id.yASCIILabel);
-        //zASCIIVal = (TextView) findViewById(R.id.zASCIILabel);
         btnConectar = (Button) findViewById(R.id.btnConnect);
         btnConectar.setOnClickListener(this);
         btnDesonectar = (Button) findViewById(R.id.btnDesconectar);
         btnDesonectar.setOnClickListener(this);
+        shootBtn = (Button) findViewById(R.id.shootBtn);
+        shootBtn.setOnClickListener(this);
+        onBtn = (Button) findViewById(R.id.onBtn);
+        onBtn.setOnClickListener(this);
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -183,8 +175,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 roll = map((int)roll, -180, 180, 0, 180);
                 pitch = map((int)pitch, -180, 180, 0, 180);
 
-                arduino.write(Character.valueOf((char)roll).toString());
-                arduino.write(Character.valueOf((char)pitch).toString());
+                arduino.write(Character.valueOf((char)roll).toString() + Character.valueOf((char)pitch).toString());
 
                 xASCII = (char)(int)(roll);
                 yASCII = (char)(int)(pitch);
@@ -202,14 +193,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
     protected void onPause() {
         super.onPause();
         senSensorManager.unregisterListener(this);
@@ -218,22 +201,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onResume() {
         super.onResume();
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -245,6 +212,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
             case R.id.btnDesconectar:
                 arduino.disconnect();
+                break;
+            case R.id.onBtn:
+                if(on){
+                    arduino.write(Character.toString((char)181));
+                    on = false;
+                }else{
+                    arduino.write(Character.toString((char)182));
+                    on = true;
+                }
+                break;
+            case R.id.shootBtn:
+                arduino.write(Character.toString((char)183));
                 break;
         }
     }
