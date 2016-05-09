@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private static final float ALPHA = 0.5f;
     boolean writeAccel = true;
     boolean on = false;
+    boolean disparar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,10 +173,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 yVal.setText(String.format("%.2f", fy));
                 zVal.setText(String.format("%.2f", fz));
 
-                roll = map((int)roll, -180, 180, 0, 180);
+                roll = map((int)roll, -180, 180, 180, 0);
                 pitch = map((int)pitch, -180, 180, 0, 180);
 
-                arduino.write(Character.valueOf((char)roll).toString() + Character.valueOf((char)pitch).toString());
+                disparar = false;
+
+                if (roll >= 60 && roll <= 120 && pitch >= 60 && pitch <= 120 && !disparar){
+                    arduino.write(Character.valueOf((char)roll).toString() + Character.valueOf((char)pitch).toString());
+                }
+
 
                 xASCII = (char)(int)(roll);
                 yASCII = (char)(int)(pitch);
@@ -215,15 +221,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
             case R.id.onBtn:
                 if(on){
-                    arduino.write(Character.toString((char)181));
+                    arduino.write(Character.toString((char)200));
                     on = false;
                 }else{
-                    arduino.write(Character.toString((char)182));
+                    arduino.write(Character.toString((char)250));
                     on = true;
                 }
                 break;
             case R.id.shootBtn:
-                arduino.write(Character.toString((char)183));
+                disparar = true;
+                arduino.write(Character.toString((char)300));
                 break;
         }
     }
