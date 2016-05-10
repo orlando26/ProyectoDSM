@@ -14,3 +14,19 @@
     height: 80%;
     width: 60%;
 }
+
+.usImg{
+    width: 80%;
+    height: 90%;
+}
+
+.tablist-left {
+width:  25%;
+display: inline-block;
+}
+.tablist-content {
+width: 60%;
+display: inline-block;
+vertical-align: top;
+margin-left: 5%;
+}

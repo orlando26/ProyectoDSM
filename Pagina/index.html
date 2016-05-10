@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <html>
 
 <head>
-    <title>Page Title</title>
+    <title>Pistolainador</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href="css/styles.css" />
@@ -13,15 +14,171 @@
 <body>
     <div data-role="page">
 
-	<div id="header" data-role="header">
-		<img src="images/pistolainador-02.png" class="logo"/>
-	</div><!-- /header -->
+        <div id="header" data-role="header">
+            <img src="images/pistolainador-02.png" class="logo" />
+        </div>
+        <!-- /header -->
 
-	<div role="main" id="content" class="ui-content">
-		<p>Page content goes here.</p>
-	</div><!-- /content -->
+        <div role="main" id="content" class="ui-content">
+            <div data-role="tabs">
 
-</div><!-- /page -->
+                <ul data-role="listview" data-inset="true" class="tablist-left">
+
+                    <li><a href="#one" data-ajax="false">Nosotros</a></li>
+
+                    <li><a href="#two" data-ajax="false">Mision</a></li>
+
+                    <li><a href="#tree" data-ajax="false">Pistola-inador</a></li>
+                </ul>
+
+                <div id="one" class="ui-body-d tablist-content">
+                    <h1>Grupo FEMKO</h1>
+                    <h3>Grupo FEMKO nació de la necesidad de acreditar la materia de Diseño de Sistemas Mecatrónicos, somos un grupo de 9 jóvenes emprendedores comprometidos con dar nuevos alcances a las tecnologías emergentes, de esta manera creamos productos que satisfagan las necesidades mas excéntricas de nuestros clientes.</h3>
+                    <h2>Nuestro equipo</h2>
+                    <div class="ui-grid-c">
+
+                        <div class="ui-block-a">
+                            <img class="usImg" src="images/lucero.png" />
+                            <label>Lucero</label>
+                        </div>
+
+                        <div class="ui-block-b">
+                            <img class="usImg" src="images/krissel.png" />
+                            <label>Krissel</label>
+                        </div>
+
+                        <div class="ui-block-c">
+                            <img class="usImg" src="images/yo.png" />
+                            <label>Orlando</label>
+                        </div>
+
+                        <div class="ui-block-d">
+                            <img class="usImg" src="images/amol.png" />
+                            <label>Fernanda</label>
+                        </div>
+                    </div>
+
+                    <div class="ui-grid-d">
+
+                        <div class="ui-block-a">
+                            <img class="usImg" src="images/melissa.png" />
+                            <label>Melissa</label>
+                        </div>
+
+                        <div class="ui-block-b">
+                            <img class="usImg" src="images/jesus.png" />
+                            <label>Jesus</label>
+                        </div>
+
+                        <div class="ui-block-c">
+                            <img class="usImg" src="images/eric.png" />
+                            <label>Eric</label>
+                        </div>
+
+                        <div class="ui-block-d">
+                            <img class="usImg" src="images/samira.png" />
+                            <label>Samira</label>
+                        </div>
+
+                        <div class="ui-block-e">
+                            <img class="usImg" src="images/roberth.png" />
+                            <label>Roberto</label>
+                        </div>
+                    </div>
+                    <!-- /grid-c -->
+
+                </div>
+
+                <ul id="two" class="ui-body-d tablist-content">
+                    <h1>Somos una empresa capaz de reinventar diseños existentes mediante nuevas tecnologías.</h1>
+                    <div class="ui-grid-b">
+
+                        <div class="ui-block-a">
+                            <img class="usImg" src="images/nerf.png" />
+                        </div>
+
+                        <div class="ui-block-b">
+                            <img class="usImg" src="images/arduino.png" />
+                        </div>
+
+                        <div class="ui-block-c">
+                            <img class="usImg" src="images/android.png" />
+                        </div>
+                    </div>
+
+                </ul>
+
+                <ul id="tree" class="ui-body-d tablist-content">
+                    <div data-role="tabs" id="tabs">
+
+                        <div data-role="navbar">
+
+                            <ul>
+
+                                <li><a href="#Objetivo" data-ajax="false">Objetivo</a></li>
+
+                                <li><a href="#prototipo" data-ajax="false">prototipo</a></li>
+                                
+                            </ul>
+                        </div>
+
+                        <div id="Objetivo" class="ui-body-d ui-content">
+                            <h2>Diseñar una pistola que se pueda controlar a distancia,
+                                tanto en movimiento como en disparo
+                            </h2>
+                        </div>
+
+                        <div id="prototipo" class="ui-body-d ui-content">
+
+                            <div class="ui-grid-a">
+                                <div class="ui-block-a">
+                                    <img class="usImg" src="images/prototipo1.png" />
+                                </div>
+
+                                <div class="ui-block-b">
+                                    <img class="usImg" src="images/prototipo2.png" />
+                                </div>
+
+                                <img src="images/pistolainador.png" style="width:100%;" />
+                            </div>
+
+                            <h3>Puntos Fuertes</h3>
+                            <ul>
+                                <li>Programación</li>
+                                <li>Diseño del mecanismo</li>
+                                <li>Ingeniería inversa de la electrónica</li>
+                                <li>Reingeniería de los sistemas de disparo y arranque</li>
+                                <li>Conocimiento en aplicaciones móviles</li>
+                            </ul>
+                            <hr/>
+                            <h3>Momento De Honestidad</h3>
+                            <ul>
+                                <li>Fuentes de alimentación</li>
+                                <li>Electricidad (aislar tierras)</li>
+                                <li>Estructura de soporte</li>
+                                <li>Otros tipos de control</li>
+                            </ul>
+                            
+                            <h3>Links</h3>
+                            <hr/>
+                            <a href="https://github.com/orlando26/ProyectoDSM/tree/js">Codigo fuente</a>
+                            <br/>
+                            <a href="https://play.google.com/store/search?q=pistolainador&hl=en">Aplicacion</a>
+
+                        </div>
+                        
+                        
+                    </div>
+
+                </ul>
+
+
+            </div>
+        </div>
+        <!-- /content -->
+
+    </div>
+    <!-- /page -->
 </body>
 
 </html>
