@@ -1,0 +1,16 @@
+#header{
+    height: 15vh;
+}
+
+#content{
+    height: 80vh;
+}
+
+.logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+    margin-top: 1vh;
+    height: 80%;
+    width: 60%;
+}
