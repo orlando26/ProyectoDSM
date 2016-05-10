@@ -5,173 +5,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginRight="19dp"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@color/colorBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.orlando.piumpium.MainActivity"
     tools:showIn="@layout/activity_main">
 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/pistolainador_02"/>
+
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/btnConnect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginRight="55dp"
-                android:text="Conectar"/>
-            <Button
-                android:id="@+id/btnDesconectar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Desconectar"/>
-        </LinearLayout>
+        android:orientation="horizontal">
 
-        <!--Labels X       -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Acelerometro X: "/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="Valor: "/>
-            <TextView
-                android:id="@+id/xLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="Roll: "/>
-            <TextView
-                android:id="@+id/xASCIILabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnConectar"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="Conectar"
+            android:layout_weight=".5"
+            android:textSize="20sp"
+            android:background="@drawable/botonselector"/>
 
-        <!--Labels Y       -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Acelerometro Y: "/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="Valor: "/>
-            <TextView
-                android:id="@+id/yLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="pitch: "/>
-            <TextView
-                android:id="@+id/yASCIILabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <!--Labels Z       -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Acelerometro Z: "/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="Valor: "/>
-            <TextView
-                android:id="@+id/zLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/onBtn"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:text="ON/OFF"/>
-
-            <Button
-                android:id="@+id/shootBtn"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:text="Disparar"/>
-
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/btnDesconectar"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="Desconectar"
+            android:layout_weight=".5"
+            android:textSize="20sp"
+            android:background="@drawable/botonselector"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="X: "/>
-            <TextView
-                android:id="@+id/panelX"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Y: "/>
-            <TextView
-                android:id="@+id/panelY"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+        android:orientation="horizontal">
 
-        <android.gesture.GestureOverlayView
-            android:layout_width="300dp"
-            android:layout_height="220dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/panel"
-            android:background="#000000"></android.gesture.GestureOverlayView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll: "
+            android:textSize="35sp"/>
+
+        <TextView
+            android:id="@+id/rolltxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Roll: "
+        android:textSize="35sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pitch: "
+            android:layout_marginLeft="195dp"
+            android:textSize="35sp"/>
+
+        <TextView
+            android:id="@+id/pitchtxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll: "
+            android:textSize="35sp"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/shootBtn"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:background="@drawable/disparoselector"/>
 
 </LinearLayout>

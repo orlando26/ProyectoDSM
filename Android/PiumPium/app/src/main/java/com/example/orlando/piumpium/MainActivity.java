@@ -1,39 +1,20 @@
 package com.example.orlando.piumpium;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.gesture.GestureOverlayView;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.orlando.arduino.Arduino;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener{
 
-    TextView xVal;
-    TextView yVal;
-    TextView zVal;
-    TextView xASCIIVal;
-    TextView yASCIIVal;
-    TextView panelX;
-    TextView panelY;
-    Button btnConectar;
-    Button btnDesonectar;
-    Button onBtn;
-    Button shootBtn;
-    GestureOverlayView panel;
-    char xASCII;
-    char yASCII;
     Arduino arduino;
     View layout;
     private long lastUpdate = 0;
@@ -46,101 +27,56 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     double roll, pitch;
     private static final int SHAKE_THRESHOLD = 600;
     private static final float ALPHA = 0.5f;
-    boolean writeAccel = true;
-    boolean on = false;
-    boolean disparar = false;
+    private Button shootBtn;
+    private Button btnConectar;
+    private Button btnDesconectar;
+    private TextView rollText;
+    private TextView pitchText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        setSupportActionBar(toolbar);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+        //Inicializacion y configuracion de variables
         arduino = new Arduino(this);
         layout = this.getWindow().findViewById(Window.ID_ANDROID_CONTENT);
-        xVal = (TextView) findViewById(R.id.xLabel);
-        yVal = (TextView) findViewById(R.id.yLabel);
-        zVal = (TextView) findViewById(R.id.zLabel);
-        panelX = (TextView) findViewById(R.id.panelX);
-        panelY = (TextView) findViewById(R.id.panelY);
-        panel = (GestureOverlayView) findViewById(R.id.panel);
-        panel.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
-            @Override
-            public void onGestureStarted(GestureOverlayView overlay, MotionEvent event) {
-                Toast.makeText(MainActivity.this, "started", Toast.LENGTH_SHORT).show();
-                writeAccel = false;
-            }
-            @Override
-            public void onGesture(GestureOverlayView overlay, MotionEvent event) {
-                int x;
-                int y;
-                x = (int)event.getX();
-                x = constrain(x, 0, overlay.getWidth());
-                x = map(x, 0, overlay.getWidth(), 0, 180);
-                y = (int) event.getY();
-                y = constrain(y, 0, overlay.getHeight());
-                y = map(y, 0, overlay.getHeight(), 0, 180);
-
-                if (x != -1 && y != -1 && x != 180 && y != 180){
-                    panelX.setText(String.valueOf(x));
-                    panelY.setText(String.valueOf(y));
-                    arduino.write(Character.toString((char) (x)));
-                    arduino.write(Character.toString((char)(y)));
-                }
-            }
-
-            @Override
-            public void onGestureEnded(GestureOverlayView overlay, MotionEvent event) {
-                Toast.makeText(MainActivity.this, "ended", Toast.LENGTH_SHORT).show();
-                writeAccel = true;
-            }
-
-            @Override
-            public void onGestureCancelled(GestureOverlayView overlay, MotionEvent event) {
-                Toast.makeText(MainActivity.this, "cancelled", Toast.LENGTH_SHORT).show();
-            }
-        });
-        xASCIIVal = (TextView) findViewById(R.id.xASCIILabel);
-        yASCIIVal = (TextView) findViewById(R.id.yASCIILabel);
-        btnConectar = (Button) findViewById(R.id.btnConnect);
-        btnConectar.setOnClickListener(this);
-        btnDesonectar = (Button) findViewById(R.id.btnDesconectar);
-        btnDesonectar.setOnClickListener(this);
-        shootBtn = (Button) findViewById(R.id.shootBtn);
-        shootBtn.setOnClickListener(this);
-        onBtn = (Button) findViewById(R.id.onBtn);
-        onBtn.setOnClickListener(this);
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
+        shootBtn = (Button)findViewById(R.id.shootBtn);
+        shootBtn.setOnClickListener(this);
+        btnConectar = (Button)findViewById(R.id.btnConectar);
+        btnConectar.setOnClickListener(this);
+        btnDesconectar = (Button)findViewById(R.id.btnDesconectar);
+        btnDesconectar.setOnClickListener(this);
+
+        rollText = (TextView)findViewById(R.id.rolltxt);
+        pitchText = (TextView)findViewById(R.id.pitchtxt);
+
     }
 
-    int map(int x, int in_min, int in_max, int out_min, int out_max)
-    {
+    int map(int x, int in_min, int in_max, int out_min, int out_max) {
         try{
             return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
         }catch(ArithmeticException e){
             return 0;
         }
     }
-    int constrain(int x, int min, int max){
-        if(x < min){
-            x = min;
-        }else if(x > max){
-            x = max;
-        }
-        return x;
-    }
 
+    /**
+     * Metodo que se manda a llamar cada vez que el acelerometro detecta movimiento
+     * @param sensorEvent
+     */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
-
+        //Configuracion y uso del API del acelerometro
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
@@ -158,36 +94,33 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 }
 
+                //se definen last_x, last_y y last_z como los valores finales del acelerometro
                 last_x = x;
                 last_y = y;
                 last_z = z;
 
+                //se limpian un poco los valores fx, fy, fz para mayos estabilidad
                 fx = last_x * ALPHA + (fx * (1.0 - ALPHA));
                 fy = last_y * ALPHA + (fy * (1.0 - ALPHA));
                 fz = last_z * ALPHA + (fz * (1.0 - ALPHA));
 
+                // Se calculan los angulos roll y pitch a partir de los valores del acelerometro
                 roll  = (Math.atan2(-fy, fz)*180.0)/Math.PI;
                 pitch = (Math.atan2(fx, Math.sqrt(fy * fy + fz * fz))*180.0)/Math.PI;
 
-                xVal.setText(String.format("%.2f", fx));
-                yVal.setText(String.format("%.2f", fy));
-                zVal.setText(String.format("%.2f", fz));
-
+                //Se mapean los angulos de 0 a 180 para poder usar en los servomotores
                 roll = map((int)roll, -180, 180, 180, 0);
                 pitch = map((int)pitch, -180, 180, 0, 180);
 
-                disparar = false;
+                // Se muestra en tiempo real el valor de los angulos en la aplicacion
+                rollText.setText(String.valueOf(roll));
+                pitchText.setText(String.valueOf(pitch));
 
-                if (roll >= 60 && roll <= 120 && pitch >= 60 && pitch <= 120 && !disparar){
+                //Los valores en los que el acelerometro es estable son entre 60 y 120
+                //asi que se toman estos valores para decidir si mandar los datos al arduino o no
+                if (roll >= 60 && roll <= 120 && pitch >= 60 && pitch <= 120){
                     arduino.write(Character.valueOf((char)roll).toString() + Character.valueOf((char)pitch).toString());
                 }
-
-
-                xASCII = (char)(int)(roll);
-                yASCII = (char)(int)(pitch);
-
-                xASCIIVal.setText(String.valueOf(roll));
-                yASCIIVal.setText(String.valueOf(pitch));
             }
         }
     }
@@ -196,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
 
     }
 
@@ -209,28 +143,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+
     @Override
-    public void onClick(View v) {
-        Button btn = (Button)v;
-        switch(btn.getId()){
-            case R.id.btnConnect:
-                arduino.connect();
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id){
+            case R.id.btnConectar:
+                arduino.connect();//Boton para conectar el arduino
                 break;
             case R.id.btnDesconectar:
-                arduino.disconnect();
-                break;
-            case R.id.onBtn:
-                if(on){
-                    arduino.write(Character.toString((char)200));
-                    on = false;
-                }else{
-                    arduino.write(Character.toString((char)250));
-                    on = true;
-                }
+                arduino.disconnect();//Bptpn para desconectar el arduino
                 break;
             case R.id.shootBtn:
-                disparar = true;
-                arduino.write(Character.toString((char)300));
+                arduino.write(String.valueOf((char)183)); //Si se presiiona el disparo se manda el ascii del valor 183 a arduino
                 break;
         }
     }

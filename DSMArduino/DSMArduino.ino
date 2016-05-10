@@ -28,12 +28,12 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(bt.available() > 0){
-    data = bt.read();
-    if(data <= 180){
-      roll = data;  
+  if(bt.available() > 0){ //Condicion para asegurar que existen datos en el puerto serie
+    data = bt.read(); //se recibe un valor tipo char del puerto serie y se guarda en la variable data de tipo int para convertir a su valor decimal(Representacion decimal del codigo ASCII)
+    if(data <= 180){ //si el dato es un valor menor a 180, entonces se mandan los valores a los servos
+      roll = data;  //el primer valor que se manda desde android es el roll de la posicion del celular
       delay(20);
-      pitch = bt.read();
+      pitch = bt.read(); //se lee el siguiente valor en el puerto serie que es el pitch y se asigna a la variable pitch
       delay(20);
       Serial.print("Roll: ");
       Serial.print(roll);
@@ -41,19 +41,14 @@ void loop() {
       Serial.println(pitch);
       posServo1 = roll;
       posServo2 = pitch;
-      servo1.write(posServo1);
-      servo2.write(posServo2);
+      servo1.write(posServo1); //se manda el valor de la variable roll al primer servo
+      servo2.write(posServo2); //se manda el valor de la variable pitch al segundo servo
     }else{
       Serial.print("Valor: ");
       Serial.print(data);
       Serial.print("ascii: ");
       Serial.println((char)data);
-      if(data == 181){
-        digitalWrite(on, HIGH);
-        Serial.print("asdasd");
-      }else if(data == 182){
-        digitalWrite(on, LOW);
-      }else if(data == 183){
+      if(data == 183){ // si el valor recibido por el puerto serie es 183 entonces se considera que se presiono el boton de disparar en la aplicacion
         Serial.print("shooot");
         digitalWrite(regreso, LOW);
         digitalWrite(disparo, HIGH);
