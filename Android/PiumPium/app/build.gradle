@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.example.orlando.piumpium"
+        applicationId "org.femko.orlando.piumpium"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
