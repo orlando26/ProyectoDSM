@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginRight="19dp"
+    android:orientation="vertical"
+    android:background="@color/colorBackground"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.orlando.piumpium.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/pistolainador_02"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnConectar"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="Conectar"
+            android:layout_weight=".5"
+            android:textSize="20sp"
+            android:background="@drawable/botonselector"/>
+
+        <Button
+            android:id="@+id/btnDesconectar"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="Desconectar"
+            android:layout_weight=".5"
+            android:textSize="20sp"
+            android:background="@drawable/botonselector"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll: "
+            android:textSize="35sp"/>
+
+        <TextView
+            android:id="@+id/rolltxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Roll: "
+        android:textSize="35sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pitch: "
+            android:layout_marginLeft="195dp"
+            android:textSize="35sp"/>
+
+        <TextView
+            android:id="@+id/pitchtxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll: "
+            android:textSize="35sp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/shootBtn"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:background="@drawable/disparoselector"/>
+
+</LinearLayout>
